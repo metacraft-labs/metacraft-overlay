@@ -51,18 +51,7 @@ jobs:
           sudo -E -u builder env HOME=/home/builder git config --global init.defaultBranch main
           sudo -E -u builder env HOME=/home/builder git config --global commit.gpgsign true
           sudo -E -u builder env HOME=/home/builder git config --global tag.gpgsign true
-          
-          sudo -E -u builder mkdir -p /home/builder/.ssh
-          echo "${{ secrets.CODETRACER_AUR_SSH_PRIVATE_KEY }}" | sudo -E -u builder tee /home/builder/.ssh/id_rsa > /dev/null
-          sudo -E -u builder chmod 600 /home/builder/.ssh/id_rsa
-          
-          sudo -E -u builder env HOME=/home/builder git config --global user.signingkey /home/builder/.ssh/id_rsa
-
-          sudo -E -u builder ssh-keyscan -H github.com | sudo -E -u builder tee -a /home/builder/.ssh/known_hosts > /dev/null
-          
-          # Start a new SSH agent for builder
-          sudo -E -u builder sh -c 'eval $(ssh-agent -s) && ssh-add /home/builder/.ssh/id_rsa && ssh-add -l'
-          
+                 
           sudo -E -u builder git fetch --all
           old="$(pwd)"
           for manifest in $(find -iname "Manifest"); do
