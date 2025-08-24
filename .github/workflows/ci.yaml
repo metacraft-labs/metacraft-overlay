@@ -21,7 +21,7 @@ jobs:
       - name: Synchronise repo and install essentials 
         run: |
           emerge --sync
-          emerge dev-vcs/git flaggie app-eselect/eselect-repository openssh sudo gpg
+          emerge dev-vcs/git flaggie app-eselect/eselect-repository openssh sudo gnupg
       - name: Recreate git repo structure
         run: |
           git config --global user.name "github-actions[bot]"
