@@ -11,6 +11,8 @@ concurrency:
 jobs:
   gentoo-job:
     runs-on: ubuntu-latest  # GitHub Actions host runner
+    permissions:
+      contents: write
     container:
       image: gentoo/stage3:desktop  # Pulls the Gentoo image from Docker Hub
     steps:
@@ -21,7 +23,7 @@ jobs:
       - name: Synchronise repo and install essentials 
         run: |
           emerge --sync
-          emerge dev-vcs/git flaggie app-eselect/eselect-repository openssh sudo app-crypt/gnupg
+          emerge dev-vcs/git flaggie app-eselect/eselect-repository openssh sudo app-crypt/gnupg github-cli
       - name: Recreate git repo structure
         run: |
           git config --global user.name "github-actions[bot]"
@@ -46,11 +48,11 @@ jobs:
           useradd -K MAIL_DIR=/dev/null -m builder
           chown -R builder $(pwd)
           echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-          sudo -E -u builder env HOME=/home/builder git config --global user.name "github-actions[bot]"
-          sudo -E -u builder env HOME=/home/builder git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          sudo -E -u builder env HOME=/home/builder git config --global init.defaultBranch main
-          sudo -E -u builder env HOME=/home/builder git config --global commit.gpgsign true
-          sudo -E -u builder env HOME=/home/builder git config --global tag.gpgsign true
+          sudo -E -u builder env HOME=/home/builder git config --local user.name "github-actions[bot]"
+          sudo -E -u builder env HOME=/home/builder git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          sudo -E -u builder env HOME=/home/builder git config --local init.defaultBranch main
+          sudo -E -u builder env HOME=/home/builder git config --local commit.gpgsign true
+          sudo -E -u builder env HOME=/home/builder git config --local tag.gpgsign true
                  
           sudo -E -u builder git fetch --all
           old="$(pwd)"
