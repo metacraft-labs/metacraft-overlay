@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   gentoo-job:
-    runs-on: ubuntu-latest  # GitHub Actions host runner
+    runs-on: eph-linux-x64
     permissions:
       contents: write
     container:
