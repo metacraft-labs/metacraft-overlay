@@ -2,7 +2,7 @@ name: Gentoo Desktop OpenRC AMD64
 
 on:
   push:
-    branches: [main]
+    branches: [stable]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,7 +10,11 @@ concurrency:
 
 jobs:
   gentoo-job:
-    runs-on: eph-linux-x64
+    # `ephemeral`: a `container:` job needs the stock runner + dockerd of the
+    # ephemeral GARM image. The persistent NixOS runners' node externals are
+    # /nix/store symlinks, so JS actions cannot run inside the container there.
+    # nixos-runner-ok: NRH4 (the ephemeral GARM image ships dockerd and the stock runner)
+    runs-on: [self-hosted, linux, x64, ephemeral]
     permissions:
       contents: write
     container:
