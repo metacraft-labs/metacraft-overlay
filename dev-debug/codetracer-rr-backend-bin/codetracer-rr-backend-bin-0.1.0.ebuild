@@ -16,6 +16,7 @@ BDEPEND=""
 DEPEND=""
 RDEPEND="sys-fs/fuse
 	dev-libs/openssl
+	dev-debug/codetracer-bin
 "
 
 S="${WORKDIR}/"
